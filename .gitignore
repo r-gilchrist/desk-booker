@@ -12,6 +12,9 @@ venv*
 # pycache
 *pycache*
 
+# Visual Studio Code
+.vscode*
+
 # Distribution / packaging
 .Python
 build/
