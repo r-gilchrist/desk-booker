@@ -9,7 +9,7 @@ def ensure_tables_are_created():
     cur = con.cursor()
 
     cur.execute('''CREATE TABLE IF NOT EXISTS desk
-               (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+               (id INTEGER PRIMARY KEY AUTOINCREMENT,
                desk_id text NOT NULL, person text NOT NULL)''')
 
     con.commit()
@@ -19,7 +19,9 @@ def ensure_tables_are_created():
 def get_bookings(desk_id):
     con = sqlite3.connect(FILENAME)
     cur = con.cursor()
-    result = cur.execute(f"SELECT * FROM desk WHERE desk_id = '{desk_id}'").fetchall()
+    result = cur.execute(
+        "SELECT * FROM desk WHERE desk_id = ?",
+        (desk_id,)).fetchall()
     con.close()
     return result
 
@@ -27,7 +29,9 @@ def get_bookings(desk_id):
 def add_booking(desk_id, person):
     con = sqlite3.connect(FILENAME)
     cur = con.cursor()
-    cur.execute("INSERT INTO desk(desk_id, person) VALUES(?, ?)", [desk_id, person])
+    cur.execute(
+        "INSERT INTO desk(desk_id, person) VALUES(?, ?)",
+        [desk_id, person])
     id = cur.lastrowid
     con.commit()
     con.close()
