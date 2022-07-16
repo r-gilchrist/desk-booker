@@ -16,7 +16,7 @@ def ensure_tables_are_created():
     con.close()
 
 
-def get_bookings(desk_id):
+def get_bookings_by_desk_id(desk_id):
     con = sqlite3.connect(FILENAME)
     cur = con.cursor()
     result = cur.execute(
@@ -25,6 +25,15 @@ def get_bookings(desk_id):
     con.close()
     return result
 
+
+def get_bookings_by_person(person):
+    con = sqlite3.connect(FILENAME)
+    cur = con.cursor()
+    result = cur.execute(
+        "SELECT * FROM desk WHERE person = ?",
+        (person,)).fetchall()
+    con.close()
+    return result
 
 def add_booking(desk_id, person):
     con = sqlite3.connect(FILENAME)

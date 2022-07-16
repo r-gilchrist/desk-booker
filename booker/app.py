@@ -13,7 +13,7 @@ class Desk(Resource):
 
     def get(self, desk_id):
 
-        bookings = database.get_bookings(desk_id)
+        bookings = database.get_bookings_by_desk_id(desk_id)
 
         if len(bookings) == 0:
             return {"msg": f"No bookings for desk {desk_id}!"}, httpResponses.NO_BOOKINGS
@@ -37,7 +37,22 @@ class Desk(Resource):
         return {}, httpResponses.DELETE_OK
 
 
+class Person(Resource):
+
+    def get(self, person):
+
+        bookings = database.get_bookings_by_person(person)
+
+        if len(bookings) == 0:
+            return {"msg": f"{person} has no desk bookings!"}, httpResponses.NO_BOOKINGS
+
+        ids, desk_ids, _ = zip(*bookings)
+
+        return {id: {"desk_id": desk_id} for (id, desk_id) in zip(ids, desk_ids)}, httpResponses.GET_OK
+
+
 api.add_resource(Desk, "/desk/<string:desk_id>")
+api.add_resource(Person, "/person/<string:person>")
 
 
 def run():
