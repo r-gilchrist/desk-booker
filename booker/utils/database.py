@@ -10,6 +10,7 @@ def ensure_tables_are_created():
 
     cur.execute('''CREATE TABLE IF NOT EXISTS desk
                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+               date DATE NOTE NULL,
                desk_id text NOT NULL, person text NOT NULL)''')
 
     con.commit()
@@ -35,12 +36,13 @@ def get_bookings_by_person(person):
     con.close()
     return result
 
-def add_booking(desk_id, person):
+
+def add_booking(desk_id, person, date):
     con = sqlite3.connect(FILENAME)
     cur = con.cursor()
     cur.execute(
-        "INSERT INTO desk(desk_id, person) VALUES(?, ?)",
-        [desk_id, person])
+        "INSERT INTO desk(desk_id, person, date) VALUES(?, ?, ?)",
+        [desk_id, person, date])
     id = cur.lastrowid
     con.commit()
     con.close()

@@ -18,15 +18,15 @@ class Desk(Resource):
         if len(bookings) == 0:
             return {"msg": f"No bookings for desk {desk_id}!"}, httpResponses.NO_BOOKINGS
 
-        ids, _, names = zip(*bookings)
+        _, dates, _, names = zip(*bookings)
 
-        return {id: {"name": name} for (id, name) in zip(ids, names)}, httpResponses.GET_OK
+        return {date: {"name": name} for (date, name) in zip(dates, names)}, httpResponses.GET_OK
 
     def post(self, desk_id):
 
         data = request.get_json()
 
-        database.add_booking(desk_id, data["name"])
+        database.add_booking(desk_id, data["name"], data["date"])
 
         return {}, httpResponses.POST_OK
 
@@ -46,9 +46,9 @@ class Person(Resource):
         if len(bookings) == 0:
             return {"msg": f"{person} has no desk bookings!"}, httpResponses.NO_BOOKINGS
 
-        ids, desk_ids, _ = zip(*bookings)
+        _, dates, desk_ids, _ = zip(*bookings)
 
-        return {id: {"desk_id": desk_id} for (id, desk_id) in zip(ids, desk_ids)}, httpResponses.GET_OK
+        return {date: {"desk_id": desk_id} for (date, desk_id) in zip(dates, desk_ids)}, httpResponses.GET_OK
 
 
 api.add_resource(Desk, "/desk/<string:desk_id>")
