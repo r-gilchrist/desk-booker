@@ -46,9 +46,14 @@ class Person(Resource):
         if len(bookings) == 0:
             return {"msg": f"{person} has no desk bookings!"}, httpResponses.NO_BOOKINGS
 
-        _, dates, desk_ids, _ = zip(*bookings)
+        ids, dates, desk_ids, _ = zip(*bookings)
 
-        return {date: {"desk_id": desk_id} for (date, desk_id) in zip(dates, desk_ids)}, httpResponses.GET_OK
+        return {
+            id: {
+                "desk_id": desk_id,
+                "date": date
+            } for (id, date, desk_id) in zip(ids, dates, desk_ids)
+        }, httpResponses.GET_OK
 
 
 api.add_resource(Desk, "/desk/<string:desk_id>")
