@@ -17,32 +17,12 @@ def ensure_tables_are_created():
     con.close()
 
 
-def get_bookings_by_desk_id(desk_id):
+def get_bookings(value, parameter):
     con = sqlite3.connect(FILENAME)
     cur = con.cursor()
     result = cur.execute(
-        "SELECT * FROM desk WHERE desk_id = ?",
-        (desk_id,)).fetchall()
-    con.close()
-    return result
-
-
-def get_bookings_by_person(person):
-    con = sqlite3.connect(FILENAME)
-    cur = con.cursor()
-    result = cur.execute(
-        "SELECT * FROM desk WHERE person = ?",
-        (person,)).fetchall()
-    con.close()
-    return result
-
-
-def get_bookings_by_date(date):
-    con = sqlite3.connect(FILENAME)
-    cur = con.cursor()
-    result = cur.execute(
-        "SELECT * FROM desk WHERE date = ?",
-        (date,)).fetchall()
+        f"SELECT * FROM desk where {parameter} = ?",
+        (value,)).fetchall()
     con.close()
     return result
 

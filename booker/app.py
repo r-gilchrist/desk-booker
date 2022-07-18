@@ -13,7 +13,7 @@ class Desk(Resource):
 
     def get(self, desk_id):
 
-        bookings = database.get_bookings_by_desk_id(desk_id)
+        bookings = database.get_bookings(desk_id, "desk_id")
 
         if len(bookings) == 0:
             return {"msg": f"No bookings for desk {desk_id}!"}, httpResponses.NO_BOOKINGS
@@ -41,7 +41,7 @@ class Person(Resource):
 
     def get(self, person):
 
-        bookings = database.get_bookings_by_person(person)
+        bookings = database.get_bookings(person, "person")
 
         if len(bookings) == 0:
             return {"msg": f"{person} has no desk bookings!"}, httpResponses.NO_BOOKINGS
@@ -60,7 +60,7 @@ class Date(Resource):
 
     def get(self, date):
 
-        bookings = database.get_bookings_by_date(date)
+        bookings = database.get_bookings(date, "date")
 
         if len(bookings) == 0:
             return {"msg": f"No desk bookings on {date}!"}, httpResponses.NO_BOOKINGS
