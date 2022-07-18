@@ -56,8 +56,27 @@ class Person(Resource):
         }, httpResponses.GET_OK
 
 
+class Date(Resource):
+
+    def get(self, date):
+
+        bookings = database.get_bookings_by_date(date)
+
+        if len(bookings) == 0:
+            return {"msg": f"No desk bookings on {date}!"}, httpResponses.NO_BOOKINGS
+
+        ids, _, desk_ids, names = zip(*bookings)
+
+        return {
+            id: {
+                "name": name,
+                "desk_id": desk_id
+            } for (id, name, desk_id) in zip(ids, names, desk_ids)
+        }, httpResponses.GET_OK
+
 api.add_resource(Desk, "/desk/<string:desk_id>")
 api.add_resource(Person, "/person/<string:person>")
+api.add_resource(Date, "/date/<string:date>")
 
 
 def run():

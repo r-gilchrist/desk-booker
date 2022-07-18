@@ -37,6 +37,16 @@ def get_bookings_by_person(person):
     return result
 
 
+def get_bookings_by_date(date):
+    con = sqlite3.connect(FILENAME)
+    cur = con.cursor()
+    result = cur.execute(
+        "SELECT * FROM desk WHERE date = ?",
+        (date,)).fetchall()
+    con.close()
+    return result
+
+
 def add_booking(desk_id, person, date):
     con = sqlite3.connect(FILENAME)
     cur = con.cursor()
